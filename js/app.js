@@ -101,12 +101,11 @@
                if (Math.abs(deltaX) > Math.abs(deltaY)){
                    moveLength = deltaX;
                    var translate = initialPos + deltaX; //当前需要移动到的位置
-                   //如果translate>0 或 < maxWidth,则表示页面超出边界
-                   if (translate <=0 || translate >= maxWidth){
+
                        //this.transform得到transform方法，call更改方法执行时的对象为viewport
                        this.transform.call(viewport,translate);
                        isMove = true;
-                   }
+
                    direction = deltaX>0?"right":"left"; //判断手指滑动的方向
                }
                
