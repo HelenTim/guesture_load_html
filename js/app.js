@@ -6,7 +6,10 @@
 
     var app = {
         init:function(){
+            // 检测当前浏览器是不是pc浏览器
            if(/(windows)/i.test(navigator.userAgent)){
+               // 是的话就跳转到另外一个地址
+
                location.href = 'views/pc.html';
            }
            document.addEventListener('DOMContentLoaded',function(){
@@ -50,7 +53,7 @@
          */
         bindTouchEvent:function(){
            var viewport =  document.querySelector('#viewport');
-           var pageWidth = window.innerWidth; //页面宽度
+           var pageWidth = window.innerWidth; //页面宽度只读属性，声明了窗口的文档显示区的高度和宽度，以像素计。这里的宽度和高度不包括菜单栏、工具栏以及滚动条等的高度。
            var maxWidth = - pageWidth * (points.length-1); //页面滑动最后一页的位置
            var startX,startY;
            var initialPos = 0;  // 手指按下的屏幕位置
@@ -64,8 +67,11 @@
            document.addEventListener("touchstart",function(e){
                e.preventDefault();
                //单手指触摸或者多手指同时触摸，禁止第二个手指延迟操作事件
+               //touches是一个对象数组——见高程P399
+               console.log(e.touches.length);
                if(e.touches.length == 1 || isTouchEnd){
                    var touch = e.touches[0];
+                   //touch点离视口左侧的位置
                    startX = touch.pageX;
                    startY = touch.pageY;
                    initialPos = currentPosition;   //本次滑动前的初始位置
