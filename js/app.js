@@ -1,5 +1,6 @@
+//下面这种写法就是面向对象的写法
 (function(window,document){
-    var currentPosition = 0; //记录当前页面位置
+    var currentPosition = 0; //记录当前页面位置（当前在第几页）
     var currentPoint = -1;   //记录当前点的位置
     var pageNow = 1;   //当前页码
     var points = null; //页码数
@@ -24,7 +25,7 @@
         bindBtnClick:function(){
             var button = document.querySelector('#testbtn');
             button.addEventListener('touchstart',function(){
-                console.log('touch')
+                console.log('touch');
             })
              
         },
@@ -56,7 +57,7 @@
            var pageWidth = window.innerWidth; //页面宽度只读属性，声明了窗口的文档显示区的高度和宽度，以像素计。这里的宽度和高度不包括菜单栏、工具栏以及滚动条等的高度。
            var maxWidth = - pageWidth * (points.length-1); //页面滑动最后一页的位置
            var startX,startY;
-           var initialPos = 0;  // 手指按下的屏幕位置
+           var initialPos = 0;  // 手指按下时屏幕位置（按下时在第几页）
            var moveLength = 0;  // 手指当前滑动的距离
            var direction = "left"; //滑动的方向
            var isMove = false; //是否发生左右滑动
@@ -68,18 +69,19 @@
                e.preventDefault();
                //单手指触摸或者多手指同时触摸，禁止第二个手指延迟操作事件
                //touches是一个对象数组——见高程P399
-               console.log(e.touches.length);
+
                if(e.touches.length == 1 || isTouchEnd){
                    var touch = e.touches[0];
-                   //touch点离视口左侧的位置
+                   //触摸点离视口左侧的位置
                    startX = touch.pageX;
                    startY = touch.pageY;
                    initialPos = currentPosition;   //本次滑动前的初始位置
                    viewport.style.webkitTransition = ""; //取消动画效果
-                   startT = new Date().getTime(); //记录手指按下的开始时间
+                   startT = new Date().getTime(); //记录手指按下时的开始时间
                    isMove = false; //是否产生滑动
                    isTouchEnd = false; //当前滑动开始
                }
+               //这里的this指向外部对象app，作用是为了此方法里面的this指向app对象
            }.bind(this),false);
 
            /*手指在屏幕上滑动，页面跟随手指移动*/
@@ -90,14 +92,18 @@
                if(isTouchEnd) return ;
                
                var touch = e.touches[0];
+               // 将现在的位置和一开始触摸时的位置作比较，以此判断滑动方向
+               //移动时任然可以取得触摸点距离视口的距离———— touch.pageX
                var deltaX = touch.pageX - startX;
                var deltaY = touch.pageY - startY;
                //如果X方向上的位移大于Y方向，则认为是左右滑动
+               // Math.abs()取得绝对值
                if (Math.abs(deltaX) > Math.abs(deltaY)){
                    moveLength = deltaX;
                    var translate = initialPos + deltaX; //当前需要移动到的位置
                    //如果translate>0 或 < maxWidth,则表示页面超出边界
-                   if (translate <=0 && translate >= maxWidth){
+                   if (translate <=0 || translate >= maxWidth){
+                       //this.transform得到transform方法，call更改方法执行时的对象为viewport
                        this.transform.call(viewport,translate);
                        isMove = true;
                    }
