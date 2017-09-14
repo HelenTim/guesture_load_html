@@ -1,6 +1,9 @@
-H5单页面手势滑屏切换是采用HTML5 触摸事件(Touch) 和 CSS3动画(Transform,Transition)来实现的，效果图如下所示，本文简单说一下其实现原理和主要思路。
+H5单页面手势滑屏切换是采用HTML5 触摸事件(Touch) 和 CSS3动画(Transform,Transition)来实现的,
+本文简单说一下其实现原理和主要思路。
     1、实现原理
-        假设有5个页面，每个页面占屏幕100%宽，则创建一个DIV容器viewport，将其宽度(width) 设置为500%，然后将5个页面装入容器中，并让这5个页面平分整个容器，最后将容器的默认位置设置为0,overflow设置为hidden,这样屏幕就默认显示第一个页面。
+        假设有5个页面，每个页面占屏幕100%宽，则创建一个DIV容器viewport，将其宽度(width) 设置为500%，然后将5个页面装入容器中，
+        并让这5个页面平分整个容器，最后将容器的默认位置设置为0,overflow设置为hidden,
+        这样屏幕就默认显示第一个页面。
         <div id="viewport" class="viewport">
          <div class="pageview" style="background: #3b76c0" >
           <h3 >页面-1</h3>
@@ -29,7 +32,11 @@ H5单页面手势滑屏切换是采用HTML5 触摸事件(Touch) 和 CSS3动画(T
              backface-visibility: hidden;
              position: relative;
             }
-            注册touchstart,touchmove和touchend事件，当手指在屏幕上滑动时,使用CSS3的transform来实时设置viewport的位置，比如要显示第二个页面，就设置viewport的transform:translate3d(100%,0,0) 即可， 在这里我们使用translate3d来代替translateX，translate3d可以主动开启手机GPU加速渲染，页面滑动更流畅。
+            注册touchstart,touchmove和touchend事件，当手指在屏幕上滑动时,
+            使用CSS3的transform来实时设置viewport的位置，比如要显示第二个页面，
+            就设置viewport的transform:translate3d(100%,0,0) 即可，
+            在这里我们使用translate3d来代替translateX，translate3d可以主动开启手机GPU加速渲染，
+            页面滑动更流畅。
     2、主要思路
     从手指放在屏幕上、滑动操作、再到离开屏幕是一个完整的操作过程，对应的操作会触发如下事件：
     手指放在屏幕上：ontouchstart
@@ -71,9 +78,11 @@ H5单页面手势滑屏切换是采用HTML5 触摸事件(Touch) 和 CSS3动画(T
         }.bind(this),false);
 
 
-       ontouchend:手指离开屏幕时，计算屏幕最终停留在哪一页。首先计算手指在屏幕上的停留时间deltaT,如果deltaT<300ms，则认为是快速滑动，相反则是慢速滑动，快速滑动和慢速滑动的处理是不同的：
+       ontouchend:手指离开屏幕时，计算屏幕最终停留在哪一页。首先计算手指在屏幕上的停留时间deltaT,如果deltaT<300ms，
+       则认为是快速滑动，相反则是慢速滑动，快速滑动和慢速滑动的处理是不同的：
        (1)如果是快速滑动，则让当前页面完整的停留在屏幕中央(需要计算当前页面还有多少需要滑动)
-       (2)如果是慢速滑动，还需要判断手指在屏幕上滑动的距离，如果滑动的距离没有超过屏幕宽度50%，则要回退到上一页，相反则要停留在当前页面
+       (2)如果是慢速滑动，还需要判断手指在屏幕上滑动的距离，如果滑动的距离没有超过屏幕宽度50%，
+       则要回退到上一页，相反则要停留在当前页面
             /*手指离开屏幕时，计算最终需要停留在哪一页*/
             document.addEventListener("touchend",function(e){
              e.preventDefault();
