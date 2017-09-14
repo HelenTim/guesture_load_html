@@ -68,7 +68,7 @@
                e.preventDefault();
                //单手指触摸或者多手指同时触摸，禁止第二个手指延迟操作事件
                //touches是一个对象数组——见高程P399
-               alert(e.touches.length);
+               console.log(e.touches.length);
                if(e.touches.length == 1 || isTouchEnd){
                    var touch = e.touches[0];
                    //touch点离视口左侧的位置
