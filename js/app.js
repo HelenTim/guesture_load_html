@@ -57,7 +57,7 @@
            var pageWidth = window.innerWidth; //页面宽度只读属性，声明了窗口的文档显示区的高度和宽度，以像素计。这里的宽度和高度不包括菜单栏、工具栏以及滚动条等的高度。
            var maxWidth = - pageWidth * (points.length-1); //页面滑动最后一页的位置
            var startX,startY;
-           var initialPos = 0;  // 手指按下时屏幕位置（按下时在第几页）
+           var initialPos = 0;  // 手指按下时屏幕位置（当前第几页所在的位置）
            var moveLength = 0;  // 手指当前滑动的距离
            var direction = "left"; //滑动的方向
            var isMove = false; //是否发生左右滑动
@@ -75,7 +75,8 @@
                    //触摸点离视口左侧的位置
                    startX = touch.pageX;
                    startY = touch.pageY;
-                   initialPos = currentPosition;   //本次滑动前的初始位置
+                   initialPos = currentPosition;   //每一次点击时前页面所在的位置
+
                    viewport.style.webkitTransition = ""; //取消动画效果
                    startT = new Date().getTime(); //记录手指按下时的开始时间
                    isMove = false; //是否产生滑动
