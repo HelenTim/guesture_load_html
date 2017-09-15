@@ -157,3 +157,17 @@
        }
     }
 })(window,document);
+
+//以下实现的是通过ajax请求实现html代码片段的加载
+
+(function () {
+    $.ajax( {
+        url: 'page1.html', //这里是静态页的地址
+        type: "GET", //静态页用get方法，否则服务器会抛出405错误
+        success: function(data){
+            var result = $(data);//把片段转化为jq对象
+            $(".pageview1").html(result);
+        }
+    });
+
+})();
