@@ -1,8 +1,8 @@
 (function(window, document) {
     var currentPosition = 0;
-    var currentPoint = -1;
-    var pageNow = 1;
-    var points = null;
+    // var currentPoint = -1;
+    // var pageNow = 1;
+    // var points = null;
 
     var app = {
         init: function() {
