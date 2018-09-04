@@ -18,8 +18,9 @@
         },
         bindTouchEvent: function() {
             var viewport = document.querySelector('#viewport');
-            var pageWidth = parseFloat(window.getComputedStyle(viewport, null).width) / points.length;
-            var maxWidth = -pageWidth * (points.length - 1);
+            // var pageWidth = parseFloat(window.getComputedStyle(viewport, null).width) / points.length;
+            // var maxWidth = -pageWidth * (points.length - 1);
+            var maxWidth = -1000;
             var startX, startY;
             var initialPos = 0;
             var moveLength = 0;
@@ -36,7 +37,7 @@
                     initialPos = currentPosition;
 
                     viewport.style.webkitTransition = "";
-                    startT = new Date().getTime();
+                    // startT = new Date().getTime();
                     isMove = false;
                     isTouchEnd = false;
                 }
@@ -49,6 +50,7 @@
                 var deltaY = touch.pageY - startY;
                 if (Math.abs(deltaX) > Math.abs(deltaY)) {
                     moveLength = deltaX;
+                    console.log(moveLength);
                     var translate = initialPos + deltaX;
                     this.transform.call(viewport, translate);
                     isMove = true;
@@ -60,27 +62,28 @@
             document.addEventListener("touchend", function(e) {
                 e.preventDefault();
                 var translate = 0;
-                var deltaT = new Date().getTime() - startT;
+                // var deltaT = new Date().getTime() - startT;
                 if (isMove && !isTouchEnd) {
                     isTouchEnd = true;
                     viewport.style.webkitTransition = "0.3s ease -webkit-transform";
-                    if (deltaT < 300) {
-                        translate = direction == 'left' ?
-                            currentPosition - (pageWidth + moveLength) : currentPosition + pageWidth - moveLength;
-                        translate = translate > 0 ? 0 : translate;
-                        translate = translate < maxWidth ? maxWidth : translate;
-                    } else {
-                        if (Math.abs(moveLength) / pageWidth < 0.5) {
-                            translate = currentPosition - moveLength;
-                        } else {
-                            translate = direction == 'left' ?
-                                currentPosition - (pageWidth + moveLength) : currentPosition + pageWidth - moveLength;
-                            translate = translate > 0 ? 0 : translate;
-                            translate = translate < maxWidth ? maxWidth : translate;
-                        }
-                    }
+                    translate = currentPosition > 0 ? 0 : (currentPosition < maxWidth ? maxWidth : currentPosition);
+                    // if (deltaT < 300) {
+                        // translate = direction == 'left' ?
+                        //     currentPosition +  moveLength : currentPosition -  moveLength;
+                        // translate = translate > 0 ? 0 : translate;
+                        // translate = translate < maxWidth ? maxWidth : translate;
+                    // } else {
+                    //     // if (Math.abs(moveLength) / pageWidth < 0.5) {
+                    //     //     translate = currentPosition - moveLength;
+                    //     // } else {
+                    //         translate = direction == 'left' ?
+                    //             currentPosition - (pageWidth + moveLength) : currentPosition + pageWidth - moveLength;
+                    //         translate = translate > 0 ? 0 : translate;
+                    //         translate = translate < maxWidth ? maxWidth : translate;
+                    //     // }
+                    // }
                     this.transform.call(viewport, translate);
-                    pageNow = Math.round(Math.abs(translate) / pageWidth) + 1;
+                    // pageNow = Math.round(Math.abs(translate) / pageWidth) + 1;
                 }
             }.bind(this), false);
         }
