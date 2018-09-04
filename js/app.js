@@ -7,7 +7,7 @@
     var app = {
         init: function() {
             document.addEventListener('DOMContentLoaded', function() {
-                points = document.querySelectorAll('.pageview');
+                // points = document.querySelectorAll('.pageview');
                 app.bindTouchEvent();
             }.bind(app), false);
         }(),
@@ -55,7 +55,7 @@
                     this.transform.call(viewport, translate);
                     isMove = true;
 
-                    direction = deltaX > 0 ? "right" : "left";
+                    // direction = deltaX > 0 ? "right" : "left";
                 }
 
             }.bind(this), false);
